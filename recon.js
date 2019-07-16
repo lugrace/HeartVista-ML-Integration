@@ -21,12 +21,16 @@ sort.observedKeysChanged.connect(function(keys) {
 });
 sort.setInput(observer.output());
 
+// inverse Fourier transform of the acquired data to 
+// get image domain data
 var ifft = new RthReconImageFFT();
 ifft.setInput(sort.output());
 
+// magnitude of the image
 var abs = new RthReconImageAbs();
 abs.setInput(ifft.output());
 
+// sends image to the display
 var image = new RthReconImageToRthDisplayImage();
 image.setInput(abs.output());
 image.newImage.connect(rth.newImage);
