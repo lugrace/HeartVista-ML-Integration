@@ -1,5 +1,6 @@
 var sequenceId = rth.sequenceId();
 
+// var reconType = ReconType.FFT;
 
 var observer = new RthReconRawObserver();
 observer.setSequenceId(sequenceId);
@@ -20,6 +21,16 @@ sort.observedKeysChanged.connect(function(keys) {
   sort.setExtent([samples,totalReadouts]);
 });
 sort.setInput(observer.output());
+
+// tensorflow operator(filepath, input node name, output node name)
+// output nodes in the model pb
+// [u'Online/softmax/Softmax=>Softmax', u'Online_1/softmax/Softmax=>Softmax', u'Target/softmax/Softmax=>Softmax']
+// output could also sampling_probabilities?
+var outputs = ["Online/softmax/Softmax", "Online_1/softmax/Softmax", "Target/softmax/Softmax"];
+var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("model.pb"), "state_ph", outputs);
+if (!tensorFlowOperator.isModelLoaded()) {
+  RTHLOGGER_ERROR("Error loading tensorflow model");
+}
 
 // inverse Fourier transform of the acquired data to 
 // get image domain data
