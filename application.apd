@@ -1,16 +1,14 @@
 [Application]
-defaultName = Simulator FOV Estimate
+defaultName = My Application
 interface = lib:threeplane.ui
 continuous = 1
-reconPriority = 2
 sharedSlot = Real-Time
-; calibrations = RealTimeShimming, Adjustments, CFtuning
+calibrations = RealTimeShimming, Adjustments, CFtuning
 controlScript = control.js
 reconScript = recon.js
 singleJSEngine = false
 
-[readout]
+[sequence]
 type = waveform
-file = spiral.spv
+file = MyApp.spv
 loopIndex = 0
-; associatedRF = excitation
