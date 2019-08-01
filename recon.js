@@ -36,22 +36,26 @@ else{
 }
 
 // inverse Fourier transform of the acquired data to 
-// get image domain data
+// get image domain data in complex form
 var ifft = new RthReconImageFFT();
 ifft.setInput(sort.output());
 
+// splits the complex image so we can use it twice
+var split = new RthReconImageSplitter();
+split.setInput(ifft.output());
+
 // magnitude of the image
 var abs = new RthReconImageAbs();
-abs.setInput(ifft.output());
+abs.setInput(split.output(-1));
 
 // sends image to the display
-// var image = new RthReconImageToRthDisplayImage();
-// image.setInput(abs.output());
-// image.newImage.connect(rth.newImage);
+var image = new RthReconImageToRthDisplayImage();
+image.setInput(abs.output());
+image.newImage.connect(rth.newImage);
 
 // makes prediction w the tf model
 var predictTraj = new RthReconTensorFlow(tensorFlowOperator);
-predictTraj.setInput(abs.output());
+predictTraj.setInput(split.output(-1));
 RTHLOGGER_ERROR("GRACE - we have set the input");
 
 // predictTraj.setConnectedOutputs(["Online/softmax/Softmax"]);
@@ -59,8 +63,8 @@ RTHLOGGER_ERROR("GRACE - we have set the input");
 predictTraj.newPrediction.connect(function(traj) {
   rth.postParameter("predictedTrajectory", traj);
 });
+predictTraj.setEmitOutputs(["Online/softmax/Softmax"]);
 // predictTraj.newPrediction.connect();
-print("" + typeof "test");
 // print("" + typeof predictTraj.output());
 // var image = new RthReconImageToRthDisplayImage();
 // image.setInput(predictTraj.output());
