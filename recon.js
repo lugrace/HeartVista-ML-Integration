@@ -45,25 +45,39 @@ var split = new RthReconImageSplitter();
 split.setInput(ifft.output());
 
 // magnitude of the image
-var abs = new RthReconImageAbs();
-abs.setInput(split.output(-1));
+// var abs = new RthReconImageAbs();
+// abs.setInput(split.output(-1));
 
 // sends image to the display
 var image = new RthReconImageToRthDisplayImage();
-image.setInput(abs.output());
+// image.setInput(abs.output());
+// image.newImage.connect(rth.newImage);
+
+// change the complex output of split to something we can 
+// put in the model
+var im_real = new RthReconImageReal();
+im_real.setInput(split.output(-1));
+
+var im_imag = new RthReconImageImaginary();
+im_imag.setInput(split.output(-1));
+
+var pack = new RthReconImagePack();
+pack.setInput(im_real.output(), im_imag.output());
+
+image.setInput(pack.output());
 image.newImage.connect(rth.newImage);
+
 
 // makes prediction w the tf model
 var predictTraj = new RthReconTensorFlow(tensorFlowOperator);
-predictTraj.setInput(split.output(-1));
+predictTraj.setInput(pack.output());
 RTHLOGGER_ERROR("GRACE - we have set the input");
-
-// predictTraj.setConnectedOutputs(["Online/softmax/Softmax"]);
 
 predictTraj.newPrediction.connect(function(traj) {
   rth.postParameter("predictedTrajectory", traj);
 });
 predictTraj.setEmitOutputs(["Online/softmax/Softmax"]);
+
 // predictTraj.newPrediction.connect();
 // print("" + typeof predictTraj.output());
 // var image = new RthReconImageToRthDisplayImage();
@@ -71,70 +85,3 @@ predictTraj.setEmitOutputs(["Online/softmax/Softmax"]);
 // image.newImage.connect(rth.newImage);
 
 RTHLOGGER_ERROR("GRACE - we are technically connected?");
-
-// var predictFov = new RthReconTensorFlow(tensorFlowOperator);
-// predictFov.setInput(addBatchDimension.output());
-// predictFov.newPrediction.connect(function(fov) {
-//   rth.postParameter("predictedFieldOfView", fov);
-// });
-
-// var sequenceId = rth.sequenceId();
-
-// var kspace = new RthReconKSpace();
-// if (!kspace.loadFromReadoutTags(rth.readoutTags("readout"))) {
-//   RTHLOGGER_ERROR("Could not load k-space trajectory from readout tags");
-// }
-
-// var griddingOperator = new RthReconGriddingOperator2D(kspace);
-// var deapodizationWindow = new RthReconImageSplitter();
-// deapodizationWindow.setInput(griddingOperator.deapodizationWindow());
-
-// var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-v2.pb"), "state_ph", 'predicted_fov');
-// if (!tensorFlowOperator.isModelLoaded()) {
-//   RTHLOGGER_ERROR("Error loading tensorflow model");
-// }
-
-// var observer = new RthReconRawObserver();
-// observer.setSequenceId(sequenceId);
-
-// var grid = new RthReconRawToImageGrid(griddingOperator);
-// grid.setInput(observer.output());
-
-// var ifft = new RthReconImageFFT();
-// ifft.setInput(grid.output());
-
-// var crop = new RthReconImageCrop();
-// crop.setXSize(griddingOperator.imageSize[0]);
-// crop.setYSize(griddingOperator.imageSize[1]);
-// crop.setUpdateGeometry(false);
-// crop.setInput(ifft.output());
-
-// var deapodize = new RthReconImageMultiply();
-// deapodize.setInput(0, crop.output());
-// deapodize.setInput(1, deapodizationWindow.output(-1));
-// deapodize.setPersistentInput(1);
-// deapodize.informationPort = 0;
-
-// var magnitude = new RthReconImageAbs();
-// magnitude.setInput(deapodize.output());
-
-// var splitImage = new RthReconImageSplitter();
-// splitImage.setInput(0, magnitude.output());
-
-// // display
-// var image = new RthReconImageToRthDisplayImage();
-// image.setInput(splitImage.output(-1));
-// image.newImage.connect(rth.newImage);
-
-// // prediction
-// var addBatchDimension = new RthReconImageReshape();
-// var expandedSize = griddingOperator.imageSize;
-// expandedSize.push(1);
-// addBatchDimension.outputExtent = expandedSize;
-// addBatchDimension.setInput(splitImage.output(-1));
-
-// var predictFov = new RthReconTensorFlow(tensorFlowOperator);
-// predictFov.setInput(addBatchDimension.output());
-// predictFov.newPrediction.connect(function(fov) {
-//   rth.postParameter("predictedFieldOfView", fov);
-// });
