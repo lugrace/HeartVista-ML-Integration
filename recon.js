@@ -27,7 +27,17 @@ sort.setInput(observer.output());
 // model-v2 only contains Online/softmax/Softmax
 RTHLOGGER_ERROR("GRACE - loading Tensorflow Model");
 // var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-v2.pb"), "state_ph", "sampling_probabilities");
-var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-v2.pb"), "state_ph", "Online/softmax/Softmax");
+
+// RthReconTensorflowOperator
+// This filter accepts a single input and passes it to a TensorFlow model 
+// as complex data. Once the TensorFlow model is calculated, the result 
+// is interpreted as floats and either passed as the node output, forward 
+// input and attach results as a defined key or emit a signal with the results. 
+// What to do is selected wheter a slot is connected, if a key is defined and 
+// if output is connected. 
+// complex64
+
+var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-retrained.pb"), "state_ph", "Online/softmax/Softmax");
 if (!tensorFlowOperator.isModelLoaded()) {
   RTHLOGGER_ERROR("Error loading tensorflow model");
 }
@@ -64,7 +74,7 @@ im_imag.setInput(split.output(-1));
 var pack = new RthReconImagePack();
 pack.setInput(im_real.output(), im_imag.output());
 
-image.setInput(pack.output());
+image.setInput(im_real.output());
 image.newImage.connect(rth.newImage);
 
 
