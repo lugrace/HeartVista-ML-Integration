@@ -1,7 +1,5 @@
 var sequenceId = rth.sequenceId();
 
-// var reconType = ReconType.FFT;
-
 var observer = new RthReconRawObserver();
 observer.setSequenceId(sequenceId);
 
@@ -18,9 +16,37 @@ sort.observedKeysChanged.connect(function(keys) {
  var echoTrainLength = Math.ceil(samples*1.0/shots);
  var totalReadouts = echoTrainLength*shots;
 
+ RTHLOGGER_ERROR("GRACE - samples " + samples);
+ RTHLOGGER_ERROR("GRACE - shots " + shots);
+ RTHLOGGER_ERROR("GRACE - totalReadouts " + totalReadouts);
+
   sort.setExtent([samples,totalReadouts]);
+  // sort.setExtent([128,128]);
 });
 sort.setInput(observer.output());
+
+// var data = new RthReconData();
+
+// function changeFOV(fov) {
+// 	rth.addCommand(new RthUpdateChangeResolutionCommand(sequenceId, fov, fov));
+// }
+
+// function changeFOV(fov) {
+//   fov *= 10;
+//   if (fov < startingFieldOfView) {
+//     fov = startingFieldOfView;
+//   }
+//   var scale = startingFieldOfView / fov;
+//   rth.addCommand(new RthUpdateChangeFieldOfViewCommand(sequenceId, fov));
+//   rth.addCommand(new RthUpdateChangeResolutionCommand(sequenceId, spatialResolutionX()/scale, spatialResolutionY()/scale));
+//   rth.addCommand(new RthUpdateScaleGradientsCommand(sequenceId, "readout", scale, scale, startingThickness / sliceThickness()));
+//   // fieldOfView = fov;
+// }
+
+// changeFOV(50)
+
+// var startingFieldOfView = SB.readout["<Cartesian Readout>.fov"]
+//  RTHLOGGER_ERROR("GRACE - startingFieldOfView " + startingFieldOfView);
 
 // tensorflow operator(filepath, input node name, output node name)
 // output is sampling_probabilities
@@ -50,6 +76,14 @@ else{
 var ifft = new RthReconImageFFT();
 ifft.setInput(sort.output());
 
+// var scale = new RthReconImageScale();
+// scale.setInput(ifft.output());
+// scale.setScaling(2.0);
+
+// var reshape = new RthReconImageReshape();
+// reshape.setInput(ifft.output());
+// reshape.outputExtent = [256, 256, 1];
+
 // splits the complex image so we can use it twice
 var split = new RthReconImageSplitter();
 split.setInput(ifft.output());
@@ -74,11 +108,13 @@ im_imag.setInput(split.output(-1));
 var pack = new RthReconImagePack();
 pack.setInput(im_real.output(), im_imag.output());
 
+// var pack2 = new RthReconImagePack();
+// pack2.setInput(pack.output(), 2);
+
 image.setInput(im_real.output());
 image.newImage.connect(rth.newImage);
 
-
-// makes prediction w the tf model
+// // makes prediction w the tf model
 var predictTraj = new RthReconTensorFlow(tensorFlowOperator);
 predictTraj.setInput(pack.output());
 RTHLOGGER_ERROR("GRACE - we have set the input");
