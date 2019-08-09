@@ -60,7 +60,9 @@ rth.updateSharedParameter = function(key, value) {
   switch (key) {
     case "predictedTrajectory":
       // changePredictedFieldOfView(value/10);
-      RTHLOGGER_ERROR("GRACE - We have the prediction under value: " + value);
+      var arr = Object.keys(value[0]).map(function(key){return value[0][key];});
+      var max = arr.indexOf(Math.max.apply(null, arr));
+      RTHLOGGER_ERROR("GRACE - We have the prediction under value: " + max);
       break;
      case "predicted_labels":
       // RTHLOGGER_ERROR("GRACE - We have the prediction under value: " + value);
