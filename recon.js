@@ -20,6 +20,8 @@ sort.observedKeysChanged.connect(function(keys) {
  RTHLOGGER_ERROR("GRACE - shots " + shots);
  RTHLOGGER_ERROR("GRACE - totalReadouts " + totalReadouts);
 
+ // addBatchDimension.outputExtent = [samples, totalReadouts, 1];
+
   sort.setExtent([samples,totalReadouts]);
   // sort.setExtent([128,128]);
 });
@@ -63,7 +65,9 @@ RTHLOGGER_ERROR("GRACE - loading Tensorflow Model");
 // if output is connected. 
 // complex64
 
-var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-retrained.pb"), "state_ph", "Online/softmax/Softmax");
+var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("./model-retrained-v2.pb"), "state_ph", "Online/softmax/Softmax");
+// var tensorFlowOperator = new RthReconTensorFlowOperator(rth.filePathForName("brain_planes.pb"), "input_images", "predicted_labels");
+
 if (!tensorFlowOperator.isModelLoaded()) {
   RTHLOGGER_ERROR("Error loading tensorflow model");
 }
@@ -108,26 +112,43 @@ im_imag.setInput(split.output(-1));
 var pack = new RthReconImagePack();
 pack.setInput(im_real.output(), im_imag.output());
 
-// var pack2 = new RthReconImagePack();
-// pack2.setInput(pack.output(), 2);
+var pack2 = new RthReconImagePack();
+pack2.setInput(pack.output(), 1);
+
+// var pack3 = new RthReconImagePack();
+// pack3.setInput(pack2.output(), 1);
+
+// var transpose = new RthReconImagePermute();
+// transpose.setOrder([1, 2, 3, 0]);
+// transpose.setInput(pack2.output());
+
+// var imageExport = new RthReconImageExport();
+// var exportFileName = "test.dat";
+// imageExport.setFileName(exportFileName);
+// imageExport.setInput(transpose.output())
+
+var addBatchDimension = new RthReconImageReshape();
+addBatchDimension.setInput(pack.output());
+addBatchDimension.outputExtent = [1, 256, 256, 1]
 
 image.setInput(im_real.output());
 image.newImage.connect(rth.newImage);
 
 // // makes prediction w the tf model
 var predictTraj = new RthReconTensorFlow(tensorFlowOperator);
-predictTraj.setInput(pack.output());
+predictTraj.setInput(addBatchDimension.output());
 RTHLOGGER_ERROR("GRACE - we have set the input");
 
-predictTraj.newPrediction.connect(function(traj) {
-  rth.postParameter("predictedTrajectory", traj);
+predictTraj.newPrediction.connect(function(information, labels) {
+  rth.postParameter("predictedTrajectory", labels);
 });
 predictTraj.setEmitOutputs(["Online/softmax/Softmax"]);
 
-// predictTraj.newPrediction.connect();
-// print("" + typeof predictTraj.output());
-// var image = new RthReconImageToRthDisplayImage();
-// image.setInput(predictTraj.output());
-// image.newImage.connect(rth.newImage);
+// var tensorflow = new RthReconTensorFlow(tensorFlowOperator);
+// tensorflow.newPrediction.connect(function(information, labels) {
+//   rth.postParameter("predicted_labels", labels[0]);
+// });
+// tensorflow.setEmitOutputs(["predicted_labels"]);
+// tensorflow.setInput(addBatchDimension.output());
 
 RTHLOGGER_ERROR("GRACE - we are technically connected?");

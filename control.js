@@ -62,5 +62,9 @@ rth.updateSharedParameter = function(key, value) {
       // changePredictedFieldOfView(value/10);
       RTHLOGGER_ERROR("GRACE - We have the prediction under value: " + value);
       break;
+     case "predicted_labels":
+      // RTHLOGGER_ERROR("GRACE - We have the prediction under value: " + value);
+      // prescriptionDisplay.update(value);
+      break;
   }
 };
