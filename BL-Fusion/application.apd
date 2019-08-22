@@ -1,0 +1,24 @@
+[Application]
+defaultName = BrainLocalizer-Grace
+interface = lib:threeplane.ui
+continuous = 1
+sharedSlot = Batch
+calibrations = BatchShimming, Adjustments, CFtuning
+controlScript = control.js
+reconScript = recon.js
+
+[excitation]
+type = waveform
+file = sincRF.spv
+linearPhaseIncrement = 180
+quadraticPhaseIncrement = 117
+
+[readout]
+type = waveform
+loopIndex = 0
+file = CartesianGRE.spv
+associatedRF = sequence
+
+[spoiler]
+type = waveform
+file = lib:spoiler20.spv

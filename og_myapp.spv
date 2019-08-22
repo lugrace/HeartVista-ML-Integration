@@ -20,7 +20,7 @@
 			<key>pluginVersion</key>
 			<integer>1</integer>
 			<key>range</key>
-			<real>26</real>
+			<real>20</real>
 			<key>res</key>
 			<integer>65</integer>
 			<key>selectionStart</key>
@@ -94,7 +94,7 @@
 					<real>1.2778710126876831</real>
 				</dict>
 				<key>duration</key>
-				<real>97.283715009689331</real>
+				<real>0.97283715009689331</real>
 				<key>editableName</key>
 				<string>Sinc RF</string>
 				<key>enforceRFLimit</key>
@@ -112,7 +112,7 @@
 				<key>timeBandwidth</key>
 				<real>3</real>
 				<key>tip</key>
-				<real>25</real>
+				<real>45</real>
 				<key>window</key>
 				<integer>1</integer>
 			</dict>
@@ -131,7 +131,7 @@
 				<key>editableName</key>
 				<string>Slice Select Gradient</string>
 				<key>hasPrewinder</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>hasRewinder</key>
 				<integer>1</integer>
 				<key>netArea</key>
@@ -202,7 +202,7 @@
 				<key>hasRewinder</key>
 				<integer>1</integer>
 				<key>interleaves</key>
-				<integer>16</integer>
+				<integer>24</integer>
 				<key>netArea</key>
 				<real>0.0</real>
 				<key>pluginClass</key>
@@ -214,9 +214,9 @@
 				<key>rampSampling</key>
 				<integer>0</integer>
 				<key>res</key>
-				<integer>256</integer>
+				<integer>128</integer>
 				<key>samplingRate</key>
-				<real>256</real>
+				<real>250</real>
 				<key>x0Component</key>
 				<real>1</real>
 				<key>x1Component</key>

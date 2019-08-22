@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>685</width>
+    <height>410</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="RthParameterInputWidget" name="inputWidget_FOV" native="true">
+     <property name="minimum" stdset="0">
+      <double>20.000000000000000</double>
+     </property>
+     <property name="value" stdset="0">
+      <double>32.000000000000000</double>
+     </property>
+     <property name="title" stdset="0">
+      <string>FOV [cm]</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+      <widget class="QLabel" name="label_PredictedFov">
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RthParameterInputWidget</class>
+   <extends>QWidget</extends>
+   <header>RthParameterInputWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>inputWidget_FOV</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

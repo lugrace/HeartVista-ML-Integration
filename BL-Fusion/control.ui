@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>917</width>
+    <height>437</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="2">
+    <widget class="RthParameterInputWidget" name="inputWidget_TE">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="title">
+      <string>TE [ms]</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="RthParameterInputWidget" name="inputWidget_SliceThickness">
+     <property name="title">
+      <string>Slice Thickness [mm]</string>
+     </property>
+     <property name="value">
+      <double>8.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="5">
+    <widget class="QLabel" name="label_phaseEncodes">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="RthParameterInputWidget" name="inputWidget_FlipAngle">
+     <property name="title">
+      <string>Flip Angle [deg]</string>
+     </property>
+     <property name="maximum">
+      <double>90.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>55.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4" rowspan="2">
+    <widget class="QGroupBox" name="reconGroupBox">
+     <property name="visible">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Acceleration Type                 </string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="radioButton_fullySampled">
+        <property name="text">
+         <string>Fully Sampled</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_partial">
+        <property name="text">
+         <string>Partial k-space</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_parallel">
+        <property name="text">
+         <string>Parallel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_partialParallel">
+        <property name="text">
+         <string>Partial k-space and Parallel</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="RthParameterInputWidget" name="inputWidget_TR">
+     <property name="visible">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+     <property name="title">
+      <string>TR [ms]</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="RthParameterInputWidget" name="inputWidget_FOV">
+     <property name="title">
+      <string>FOV [cm]</string>
+     </property>
+     <property name="minimum">
+      <double>20.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>32.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3" rowspan="2">
+    <widget class="QGroupBox" name="groupBox_View">
+     <property name="title">
+      <string>Image Stack to Prescribe</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBox_Axial">
+        <property name="text">
+         <string>Axial</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_Coronal">
+        <property name="text">
+         <string>Coronal</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_Sagittal">
+        <property name="text">
+         <string>Sagittal</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QCheckBox" name="checkBox_Translate">
+     <property name="text">
+      <string>Shift to Center</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <widget class="RthParameterInputWidget" name="inputWidget_PILSFovScaleFactor">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>180</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="title">
+    <string>PILS Fov Scale Factor</string>
+   </property>
+   <property name="maximum">
+    <double>5.000000000000000</double>
+   </property>
+   <property name="value">
+    <double>2.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="RthParameterInputWidget" name="inputWidget_PhaseCycling">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>180</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+   <property name="title">
+    <string>Phase Cycling [deg]</string>
+   </property>
+   <property name="maximum">
+    <double>360.000000000000000</double>
+   </property>
+   <property name="value">
+    <double>180.000000000000000</double>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RthParameterInputWidget</class>
+   <extends>QWidget</extends>
+   <header>RthParameterInputWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>inputWidget_PhaseCycling</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
